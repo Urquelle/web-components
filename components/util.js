@@ -26,5 +26,24 @@ export default {
         }
 
         return true;
+    },
+
+    dispatchPrivateEvent(name, scope, detail) {
+        let event = new CustomEvent(name, {
+            bubbles  : true,
+            detail   : detail
+        });
+
+        scope.dispatchEvent(event);
+    },
+
+    dispatchPublicEvent(name, scope, detail) {
+        let event = new CustomEvent(name, {
+            bubbles  : true,
+            composed : true,
+            detail   : detail
+        });
+
+        scope.dispatchEvent(event);
     }
 }

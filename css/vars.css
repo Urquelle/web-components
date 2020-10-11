@@ -29,6 +29,8 @@
     --border-width-thick  : 3px;
     --border-width        : 1px;
 
+    --border-style        : solid;
+
     --padding-m           : 5px;
     --padding-lg          : 10px;
     --padding-xl          : 15px;

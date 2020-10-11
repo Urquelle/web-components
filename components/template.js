@@ -30,7 +30,9 @@ export default {
                     width           : var(--element-width);
                     background      : var(--bg-color);
                     color           : var(--fg-color);
-                    border          : solid 1px var(--border-color);
+                    border-style    : var(--border-style);
+                    border-width    : var(--border-width);
+                    border-color    : var(--border-color);
                     border-radius   : var(--border-radius);
                 }
 

@@ -90,15 +90,10 @@ export default class Select_Field extends HTMLElement {
         this.value               = value;
         this.dom.panel.innerHTML = text;
 
-        let event = new CustomEvent("changed", {
-            bubbles: true,
-            detail: {
-                value: value,
-                text: text
-            }
+        Util.dispatchPublicEvent("changed", this.root, {
+            value: value,
+            text: text
         });
-
-        document.dispatchEvent(event);
     }
 }
 
