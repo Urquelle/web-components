@@ -1,0 +1,11 @@
+.dark {
+    --fg-color            : var(--color-white);
+    --fg-color-inv        : var(--color-lightblack);
+
+    --border-color        : var(--color-white);
+    --border-color-light  : var(--color-darkwhite);
+    --border-color-inv    : var(--color-lightblack);
+
+    --bg-color            : var(--color-lightblack);
+    --bg-color-inv        : var(--color-white);
+}

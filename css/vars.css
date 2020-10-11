@@ -1,0 +1,41 @@
+:root {
+    --text-xs             : .5rem;
+    --text-sm             : .7rem;
+    --text-m              : 1rem;
+    --text-lg             : 1.3rem;
+    --text-xl             : 1.5rem;
+
+    --color-pureblack     : #000000;
+    --color-black         : #2a2a2a;
+    --color-lightblack    : #4a4a4a;
+    --color-darkgrey      : #6a6a6a;
+    --color-grey          : #7a7a7a;
+    --color-lightgrey     : #9a9a9a;
+    --color-darkwhite     : #dadada;
+    --color-white         : #fafafa;
+    --color-purewhite     : #ffffff;
+
+    --fg-color            : var(--color-lightblack);
+    --fg-color-inv        : var(--color-white);
+
+    --border-color        : var(--color-lightblack);
+    --border-color-light  : var(--color-darkwhite);
+    --border-color-inv    : var(--color-white);
+
+    --bg-color            : var(--color-white);
+    --bg-color-inv        : var(--color-lightblack);
+
+    --border-radius       : 5px;
+    --border-width-thick  : 3px;
+    --border-width        : 1px;
+
+    --padding-m           : 5px;
+    --padding-lg          : 10px;
+    --padding-xl          : 15px;
+
+    --controls-height-xs  : 20px;
+    --controls-height-sm  : 30px;
+    --controls-height-m   : 40px;
+    --controls-height-lg  : 50px;
+    --controls-height-xl  : 70px;
+}
