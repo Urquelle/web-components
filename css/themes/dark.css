@@ -7,5 +7,6 @@
     --border-color-inv    : var(--color-lightblack);
 
     --bg-color            : var(--color-lightblack);
+    --bg-color-hl         : var(--color-darkgrey);
     --bg-color-inv        : var(--color-white);
 }

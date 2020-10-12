@@ -10,9 +10,12 @@ export default {
 
     html(params) {
         let result = `
-            <div part="panel" class="panel" data-dom-name="panel"></div>
-            <div part="options" class="options" data-dom-name="options">
-                <slot></slot>
+            <div class="container" data-dom-name="container">
+                <div part="panel" class="panel" data-dom-name="panel"></div>
+                <input non-clickable data-dom-name="filter" placeholder="${params.filter_placeholder}" type="text" id="filter">
+                <div part="options" class="slot" data-dom-name="options">
+                    <slot></slot>
+                </div>
             </div>
         `;
 
@@ -23,17 +26,23 @@ export default {
         let result = `
             <style>
                 :host {
-                    --element-width : 500px;
-
                     display         : inline-block;
                     position        : relative;
-                    width           : var(--element-width);
+                    user-select     : none;
+                    width           : 500px;
                     background      : var(--bg-color);
                     color           : var(--fg-color);
+                    height          : var(--controls-height-lg);
+                }
+
+                .container {
+                    position        : absolute;
+                    width           : 100%;
                     border-style    : var(--border-style);
                     border-width    : var(--border-width);
                     border-color    : var(--border-color);
                     border-radius   : var(--border-radius);
+                    z-index         : 1;
                 }
 
                 .panel {
@@ -70,14 +79,53 @@ export default {
                     transform       : skew(0deg, -25deg);
                 }
 
-                .options {
+                .slot {
                     display         : none;
                     position        : relative;
                     width           : 100%;
                     background      : var(--bg-color);
                     color           : var(--fg-color);
                     font-size       : var(--text-lg);
-                    border-radius   : var(--border-radius);
+                    border-radius   : 0 0 var(--border-radius);
+                    overflow        : hidden;
+                }
+
+                #filter {
+                    width           : 100%;
+                    height          : var(--controls-height-m);
+                    line-height     : var(--controls-height-m);
+                    font-size       : var(--text-lg);
+                    border          : none;
+                    text-indent     : var(--padding-xl);
+                    color           : var(--fg-color);
+                    background      : var(--bg-color);
+                    box-sizing      : border-box;
+                    box-shadow      : inset 0 11px 8px -10px var(--fg-color),
+                                      inset 0 -11px 8px -10px var(--fg-color);
+                    outline         : none;
+                }
+
+                ::slotted(option) {
+                    width           : 100%;
+                    height          : var(--controls-height-lg);
+                    text-indent     : var(--padding-xl);
+                    color           : var(--fg-color);
+                    padding         : 10px 0;
+                    font-size       : var(--text-lg);
+                    box-sizing      : border-box;
+                }
+
+                ::slotted(option:last-child) {
+                    border-radius   : 0 0 var(--border-radius) var(--border-radius);
+                }
+
+                ::slotted(option:hover) {
+                    background      : var(--bg-color-inv);
+                    color           : var(--fg-color-inv);
+                }
+
+                ::slotted(option.active) {
+                    background      : var(--bg-color-hl);
                 }
             </style>
         `;

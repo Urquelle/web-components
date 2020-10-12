@@ -1,4 +1,7 @@
 :root {
+    --font                : Tahoma;
+
+    --text-base           : 16px;
     --text-xs             : .5rem;
     --text-sm             : .7rem;
     --text-m              : 1rem;
@@ -23,11 +26,13 @@
     --border-color-inv    : var(--color-white);
 
     --bg-color            : var(--color-white);
+    --bg-color-hl         : var(--color-darkwhite);
     --bg-color-inv        : var(--color-lightblack);
 
     --border-radius       : 5px;
     --border-width-thick  : 3px;
     --border-width        : 1px;
+    --border-width-thin   : 0.3px;
 
     --border-style        : solid;
 

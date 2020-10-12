@@ -2,8 +2,8 @@ export default {
     buildDom(scope) {
         let result = {};
 
-        scope.querySelectorAll(":host > [data-dom-name], :scope > [data-dom-name]").forEach( elem => {
-            elem.dom = this.buildDom(elem);
+        scope.querySelectorAll(":host [data-dom-name], :scope [data-dom-name]").forEach( elem => {
+            // elem.dom = this.buildDom(elem);
             result[elem.dataset["domName"]] = elem;
         });
 

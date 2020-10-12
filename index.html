@@ -3,75 +3,34 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="components/select_field.js" type="module"></script>
+        <script src="components/select_field/component.js" type="module"></script>
+        <script src="components/select_multiple_field/component.js" type="module"></script>
         <title>select-field</title>
         <link rel="stylesheet" href="css/vars.css">
         <link rel="stylesheet" href="css/themes/dark.css">
 
         <style>
             body {
-                background: var(--bg-color);
-                font-family: Tahoma;
-            }
-
-            select-field option {
-                width: 100%;
-                height: var(--controls-height-lg);
-                text-indent: var(--padding-xl);
-                color: var(--fg-color);
-                padding: 10px 0;
-                font-size: var(--text-lg);
-                box-sizing: border-box;
-            }
-
-            select-field option:last-child {
-                border-radius: 0 0 var(--border-radius) var(--border-radius);
-            }
-
-            select-field input {
-                width: 100%;
-                height: var(--controls-height-m);
-                line-height: var(--controls-height-m);
-                font-size: var(--text-lg);
-                border: none;
-                text-indent: var(--padding-xl);
-                color: var(--fg-color);
-                background: var(--bg-color);
-                box-sizing: border-box;
-                box-shadow: inset 0 3px 5px -2px var(--fg-color);
-            }
-
-            select-field option:hover {
-                background: var(--bg-color-inv);
-                color: var(--fg-color-inv);
+                background  : var(--bg-color);
+                font-size   : var(--text-base);
+                font-family : var(--font);
             }
         </style>
     </head>
     <body class="dark">
-        <select-field value="2" expanded="true">
-            <input non-clickable placeholder="filter eingeben" type="text" name="filter">
-            <option value="1">eins</option>
-            <option value="2">zwei</option>
-            <option value="3">drei</option>
-        </select-field>
-
-        <script>
-            document.addEventListener("changed", e => {
-                console.log(e);
-            });
-
-            document.addEventListener("DOMContentLoaded", e => {
-                document.querySelector("input[name=filter]").addEventListener("input", e => {
-                    document.querySelectorAll("select-field option").forEach(opt => {
-                        let pattern = e.target.value.split("").join(".*");
-                        if ( !e.target.value || opt.innerHTML.match(pattern) ) {
-                            opt.style.display = "block";
-                        } else {
-                            opt.style.display = "none";
-                        }
-                    });
-                });
-            });
-        </script>
+        <form method="get" action="">
+            <select-field value="2" expanded="false" filter="true">
+                <option value="1">eins</option>
+                <option value="2">zwei</option>
+                <option value="3">drei</option>
+            </select-field>
+            <select-multiple-field values="1,3" filter="true">
+                <option value="1">eins</option>
+                <option value="2">zwei</option>
+                <option value="3">drei</option>
+            </select-multiple-field>
+            <input type="submit" value="abschicken">
+        </form>
+        <p>text</p>
     </body>
 </html>
