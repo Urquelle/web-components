@@ -1,4 +1,4 @@
-.dark {
+:root {
     --fg-color            : var(--color-white);
     --fg-color-inv        : var(--color-lightblack);
 
@@ -9,4 +9,13 @@
     --bg-color            : var(--color-lightblack);
     --bg-color-hl         : var(--color-darkgrey);
     --bg-color-inv        : var(--color-white);
+}
+
+[disabled] {
+    --fg-color            : var(--color-lightgrey);
+    --bg-color            : var(--color-darkwhite);
+}
+
+*:focus {
+    --box-shadow          : 0 0 5px var(--fg-color);
 }

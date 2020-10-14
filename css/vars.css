@@ -18,23 +18,14 @@
     --color-white         : #fafafa;
     --color-purewhite     : #ffffff;
 
-    --fg-color            : var(--color-lightblack);
-    --fg-color-inv        : var(--color-white);
-
-    --border-color        : var(--color-lightblack);
-    --border-color-light  : var(--color-darkwhite);
-    --border-color-inv    : var(--color-white);
-
-    --bg-color            : var(--color-white);
-    --bg-color-hl         : var(--color-darkwhite);
-    --bg-color-inv        : var(--color-lightblack);
-
     --border-radius       : 5px;
     --border-width-thick  : 3px;
     --border-width        : 1px;
     --border-width-thin   : 0.3px;
 
     --border-style        : solid;
+
+    --box-shadow          : none;
 
     --padding-m           : 5px;
     --padding-lg          : 10px;

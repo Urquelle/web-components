@@ -1,0 +1,21 @@
+:root {
+    --fg-color            : var(--color-lightblack);
+    --fg-color-inv        : var(--color-white);
+
+    --border-color        : var(--color-lightblack);
+    --border-color-light  : var(--color-darkwhite);
+    --border-color-inv    : var(--color-white);
+
+    --bg-color            : var(--color-white);
+    --bg-color-hl         : var(--color-darkwhite);
+    --bg-color-inv        : var(--color-lightblack);
+}
+
+[disabled] {
+    --fg-color            : var(--color-lightgrey);
+    --bg-color            : var(--color-darkwhite);
+}
+
+*:focus {
+    --box-shadow          : 0 0 5px var(--fg-color);
+}

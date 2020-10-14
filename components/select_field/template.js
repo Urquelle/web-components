@@ -12,8 +12,8 @@ export default {
         let result = `
             <div class="container" data-dom-name="container">
                 <div part="panel" class="panel" data-dom-name="panel"></div>
-                <input non-clickable data-dom-name="filter" placeholder="${params.filter_placeholder}" type="text" id="filter">
-                <div part="options" class="slot" data-dom-name="options">
+                <input non-clickable data-dom-name="filter" placeholder="${params.filter_placeholder}" type="text" class="filter">
+                <div part="options" class="options" data-dom-name="options">
                     <slot></slot>
                 </div>
             </div>
@@ -28,11 +28,17 @@ export default {
                 :host {
                     display         : inline-block;
                     position        : relative;
-                    user-select     : none;
-                    width           : 500px;
+                    width           : 300px;
                     background      : var(--bg-color);
                     color           : var(--fg-color);
                     height          : var(--controls-height-lg);
+                    border-radius   : var(--border-radius);
+                    user-select     : none;
+                    outline         : none;
+                }
+
+                :host(:focus) .container {
+                    box-shadow      : var(--box-shadow);
                 }
 
                 .container {
@@ -79,29 +85,29 @@ export default {
                     transform       : skew(0deg, -25deg);
                 }
 
-                .slot {
+                .options {
                     display         : none;
                     position        : relative;
                     width           : 100%;
                     background      : var(--bg-color);
                     color           : var(--fg-color);
                     font-size       : var(--text-lg);
-                    border-radius   : 0 0 var(--border-radius);
+                    border-radius   : 0 0 var(--border-radius) var(--border-radius);
                     overflow        : hidden;
                 }
 
-                #filter {
+                .filter {
                     width           : 100%;
                     height          : var(--controls-height-m);
                     line-height     : var(--controls-height-m);
                     font-size       : var(--text-lg);
-                    border          : none;
                     text-indent     : var(--padding-xl);
                     color           : var(--fg-color);
                     background      : var(--bg-color);
+                    border-width    : var(--border-width);
+                    border-color    : var(--fg-color);
+                    border-style    : solid none;
                     box-sizing      : border-box;
-                    box-shadow      : inset 0 11px 8px -10px var(--fg-color),
-                                      inset 0 -11px 8px -10px var(--fg-color);
                     outline         : none;
                 }
 
@@ -126,6 +132,7 @@ export default {
 
                 ::slotted(option.active) {
                     background      : var(--bg-color-hl);
+                    color           : var(--fg-color-hl);
                 }
             </style>
         `;

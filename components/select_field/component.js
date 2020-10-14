@@ -41,8 +41,9 @@ export default class Select_Field extends HTMLElement {
 
         this.dom   = Dom.buildDom(this.root);
         this.slots = Dom.buildSlots(this.root);
+        this.slots.$anon1.slotNodes = this.slots.$anon1.assignedNodes().filter(n => n.classList != null);
 
-        this.slots.$anon1.assignedNodes().forEach(node => {
+        this.slots.$anon1.slotNodes.forEach(node => {
             if ( node.tagName === "OPTION" && node.value === this.value ) {
                 this.setActive(node.value, node.innerHTML);
                 return;
@@ -52,7 +53,19 @@ export default class Select_Field extends HTMLElement {
         this.dom.panel.addEventListener("click", e => this.onPanelEvent(e) );
         this.dom.options.addEventListener("click", e => this.onOptionsEvent(e) );
         this.addEventListener("keyup", this.onKeyup);
-        this.addEventListener("input", this.onInput);
+        this.dom.filter.addEventListener("input", e => {
+            this.slots.$anon1.slotNodes.forEach(opt => {
+                if ( opt.tagName === "OPTION" ) {
+                    let pattern = e.originalTarget.value.split("").join(".*");
+
+                    if ( !e.originalTarget.value || opt.innerHTML.match(pattern) ) {
+                        opt.style.display = "block";
+                    } else {
+                        opt.style.display = "none";
+                    }
+                }
+            });
+        });
 
         document.addEventListener("click", e => {
             let rect  = this.dom.container.getBoundingClientRect();
@@ -75,6 +88,10 @@ export default class Select_Field extends HTMLElement {
     }
 
     set expanded(val) {
+        if ( this.disabled ) {
+            return;
+        }
+
         this.setAttribute("expanded", val);
         this.active_item = -1;
         this.renderActiveItem();
@@ -84,6 +101,18 @@ export default class Select_Field extends HTMLElement {
         let result = this.getAttribute("expanded");
 
         return Util.toBool(result);
+    }
+
+    set disabled(val) {
+        if ( val ) {
+            this.setAttribute("disabled", "");
+        } else {
+            this.removeAttribute("disabled");
+        }
+    }
+
+    get disabled() {
+        return this.hasAttribute("disabled");
     }
 
     set filter(val) {
@@ -111,28 +140,12 @@ export default class Select_Field extends HTMLElement {
         }
     }
 
-    onInput(e) {
-        if ( e.originalTarget !== this.dom.filter ) return;
-
-        this.slots.$anon1.assignedNodes().forEach(opt => {
-            if ( opt.tagName === "OPTION" ) {
-                let pattern = e.originalTarget.value.split("").join(".*");
-
-                if ( !e.originalTarget.value || opt.innerHTML.match(pattern) ) {
-                    opt.style.display = "block";
-                } else {
-                    opt.style.display = "none";
-                }
-            }
-        });
-    }
-
     onKeyup(e) {
         switch ( e.keyCode ) {
             case Keys.KEY_ARROW_DOWN:
             case Keys.KEY_ARROW_UP: {
                 if ( this.expanded === true ) {
-                    let nodes = this.slots.$anon1.assignedNodes().filter(n => n.classList != null);
+                    let nodes = this.slots.$anon1.slotNodes;
 
                     if ( e.keyCode == Keys.KEY_ARROW_DOWN ) {
                         this.active_item = Math.min(this.active_item + 1, nodes.length - 1);
@@ -148,7 +161,7 @@ export default class Select_Field extends HTMLElement {
 
             case Keys.KEY_RETURN: {
                 if ( this.expanded ) {
-                    let nodes = this.slots.$anon1.assignedNodes().filter(n => n.classList != null);
+                    let nodes = this.slots.$anon1.slotNodes;
 
                     if ( this.active_item >= 0 ) {
                         let node = nodes[this.active_item];
@@ -158,6 +171,14 @@ export default class Select_Field extends HTMLElement {
                 } else {
                     this.expanded = true;
                 }
+            } break;
+
+            case Keys.KEY_F: {
+                this.dom.filter.focus();
+            } break;
+
+            case Keys.KEY_ESC: {
+                this.expanded = false;
             } break;
         }
     }
@@ -183,7 +204,7 @@ export default class Select_Field extends HTMLElement {
     }
 
     renderActiveItem() {
-        let nodes = this.slots.$anon1.assignedNodes().filter(n => n.classList != null);
+        let nodes = this.slots.$anon1.slotNodes;
         let count = 0;
 
         nodes.forEach(node => {
@@ -199,7 +220,7 @@ export default class Select_Field extends HTMLElement {
 
     render() {
         this.root.innerHTML = Template.render({
-            filter_placeholder : "filter eintippen",
+            filter_placeholder : "'f' drücken um zu filtern",
         });
     }
 }

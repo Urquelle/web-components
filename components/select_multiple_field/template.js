@@ -9,7 +9,7 @@ export default {
     html(params) {
         return `
             <div class="container" data-dom-name="container">
-                <input id="filter" data-dom-name="filter" type="text" placeholder="${params.filter_placeholder}">
+                <input class="filter" data-dom-name="filter" type="text" placeholder="${params.filter_placeholder}">
                 <div class="options" data-dom-name="options">
                     <slot></slot>
                 </div>
@@ -26,6 +26,14 @@ export default {
                     width           : 500px;
                     background      : var(--bg-color);
                     color           : var(--fg-color);
+                    box-shadow      : var(--box-shadow);
+                    border-radius   : var(--border-radius);
+                    user-select     : none;
+                    outline         : none;
+                }
+
+                :host(:focus) .container {
+                    box-shadow      : var(--box-shadow);
                 }
 
                 .container {
@@ -41,7 +49,7 @@ export default {
                     overflow        : hidden;
                 }
 
-                #filter {
+                .filter {
                     width           : 100%;
                     height          : var(--controls-height-m);
                     line-height     : var(--controls-height-m);
@@ -68,6 +76,16 @@ export default {
                 ::slotted(option.selected) {
                     background      : var(--bg-color-inv);
                     color           : var(--fg-color-inv);
+                }
+
+                ::slotted(option.active) {
+                    background      : var(--bg-color-hl);
+                    color           : var(--fg-color-hl);
+                }
+
+                ::slotted(option.dragenter) {
+                    background      : var(--bg-color-hl);
+                    color           : var(--fg-color-hl);
                 }
             </style>
         `;
