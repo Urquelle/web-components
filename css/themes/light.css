@@ -1,21 +1,35 @@
 :root {
-    --fg-color            : var(--color-lightblack);
-    --fg-color-inv        : var(--color-white);
+    --theme-bg                           : #fafafa;
+    --theme-fg                           : #030303;
 
-    --border-color        : var(--color-lightblack);
-    --border-color-light  : var(--color-darkwhite);
-    --border-color-inv    : var(--color-white);
+    --theme-ctrl-bg                      : #cabab1;
+    --theme-ctrl-fg                      : #fafafa;
+    --theme-ctrl-hover-bg                : #b19a8d;
+    --theme-ctrl-hover-fg                : #fafafa;
+    --theme-ctrl-active-bg               : #b19a8d;
+    --theme-ctrl-active-fg               : #fafafa;
+    --theme-ctrl-disabled-bg             : #999999;
+    --theme-ctrl-disabled-fg             : #030303;
 
-    --bg-color            : var(--color-white);
-    --bg-color-hl         : var(--color-darkwhite);
-    --bg-color-inv        : var(--color-lightblack);
+    --theme-wgt-bg                       : #263238;
+    --theme-wgt-fg                       : #fafafa;
+    --theme-wgt-hover-bg                 : #314048;
+    --theme-wgt-hover-fg                 : #fafafa;
+    --theme-wgt-active-bg                : #314048;
+    --theme-wgt-active-fg                : #fafafa;
+    --theme-wgt-disabled-bg              : #999999;
+    --theme-wgt-disabled-fg              : #030303;
+
+    --theme-ctrl-height                  : 35px;
+    --theme-padding                      : 13px;
+
+    --theme-font-family                  : Antonio;
+    --theme-font-size                    : 16px;
+
+    --theme-box-shadow                   : 0 5px 5px -3px rgba(202, 186, 177, 0.2),
+                                           0 8px 10px 1px rgba(202, 186, 177, 0.14),
+                                           0 3px 14px 2px rgba(202, 186, 177, 0.12);
 }
 
 [disabled] {
-    --fg-color            : var(--color-lightgrey);
-    --bg-color            : var(--color-darkwhite);
-}
-
-*:focus {
-    --box-shadow          : 0 0 5px var(--fg-color);
 }

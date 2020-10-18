@@ -1,28 +1,14 @@
 :root {
-    --font                : Tahoma;
-
-    --text-base           : 16px;
     --text-xs             : .5rem;
     --text-sm             : .7rem;
     --text-m              : 1rem;
     --text-lg             : 1.3rem;
     --text-xl             : 1.5rem;
 
-    --color-pureblack     : #000000;
-    --color-black         : #2a2a2a;
-    --color-lightblack    : #4a4a4a;
-    --color-darkgrey      : #6a6a6a;
-    --color-grey          : #7a7a7a;
-    --color-lightgrey     : #9a9a9a;
-    --color-darkwhite     : #dadada;
-    --color-white         : #fafafa;
-    --color-purewhite     : #ffffff;
-
     --border-radius       : 5px;
     --border-width-thick  : 3px;
     --border-width        : 1px;
     --border-width-thin   : 0.3px;
-
     --border-style        : solid;
 
     --box-shadow          : none;
@@ -31,9 +17,9 @@
     --padding-lg          : 10px;
     --padding-xl          : 15px;
 
-    --controls-height-xs  : 20px;
-    --controls-height-sm  : 30px;
-    --controls-height-m   : 40px;
-    --controls-height-lg  : 50px;
-    --controls-height-xl  : 70px;
+    --ctrl-height-xs      : 15px;
+    --ctrl-height-sm      : 20px;
+    --ctrl-height         : 30px;
+    --ctrl-height-lg      : 40px;
+    --ctrl-height-xl      : 50px;
 }

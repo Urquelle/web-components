@@ -12,7 +12,7 @@ export default {
         let result = `
             <div class="container" data-dom-name="container">
                 <div part="panel" class="panel" data-dom-name="panel"></div>
-                <input non-clickable data-dom-name="filter" placeholder="${params.filter_placeholder}" type="text" class="filter">
+                <input non-clickable tabindex="-1" data-dom-name="filter" placeholder="${params.filter_placeholder}" type="text" class="filter">
                 <div part="options" class="options" data-dom-name="options">
                     <slot></slot>
                 </div>
@@ -29,16 +29,23 @@ export default {
                     display         : inline-block;
                     position        : relative;
                     width           : 300px;
-                    background      : var(--bg-color);
-                    color           : var(--fg-color);
-                    height          : var(--controls-height-lg);
-                    border-radius   : var(--border-radius);
+                    height          : var(--theme-ctrl-height);
                     user-select     : none;
                     outline         : none;
                 }
 
                 :host(:focus) .container {
-                    box-shadow      : var(--box-shadow);
+                    box-shadow      : var(--theme-box-shadow);
+                }
+
+                input {
+                    font-family     : var(--theme-font-family);
+                    font-size       : var(--theme-font-size);
+                }
+
+                .container .filter::selection {
+                    background      : var(--theme-ctrl-bg);
+                    color           : var(--theme-ctrl-fg);
                 }
 
                 .container {
@@ -46,42 +53,55 @@ export default {
                     width           : 100%;
                     border-style    : var(--border-style);
                     border-width    : var(--border-width);
-                    border-color    : var(--border-color);
+                    border-color    : var(--theme-ctrl-bg);
                     border-radius   : var(--border-radius);
+                    background      : var(--theme-ctrl-bg);
+                    cursor          : pointer;
+                    transition      : .4s;
+                    overflow        : hidden;
                     z-index         : 1;
+                }
+
+                .container:hover {
+                    border-color    : var(--theme-ctrl-hover-bg);
+                    box-shadow      : var(--theme-box-shadow);
+                }
+
+                .container:hover .panel {
+                    background      : var(--theme-ctrl-hover-bg);
                 }
 
                 .panel {
                     position        : relative;
                     width           : 100%;
-                    height          : var(--controls-height-lg);
-                    line-height     : var(--controls-height-lg);
+                    height          : var(--theme-ctrl-height);
+                    line-height     : var(--theme-ctrl-height);
                     text-indent     : var(--padding-xl);
-                    color           : var(--fg-color);
-                    background      : var(--bg-color);
-                    font-size       : var(--text-lg);
-                    border-radius   : var(--border-radius);
+                    background      : var(--theme-ctrl-bg);
+                    color           : var(--theme-ctrl-fg);
+                    border-radius   : var(--border-radius) var(--border-radius) 0 0;
+                    transition      : .4s;
                 }
 
                 .panel:before {
                     position        : absolute;
                     content         : "";
                     right           : 20px;
-                    top             : calc(var(--controls-height-lg) / 2 - 2px);
+                    top             : calc(var(--theme-ctrl-height) / 2 - 2px);
                     height          : 2px;
                     width           : 5px;
-                    background      : var(--fg-color);
+                    background      : var(--theme-ctrl-fg);
                     transform       : skew(0deg, 25deg);
                 }
 
                 .panel:after {
                     position        : absolute;
                     content         : "";
-                    right           : 15px;
-                    top             : calc(var(--controls-height-lg) / 2 - 2px);
+                    right           : 16px;
+                    top             : calc(var(--theme-ctrl-height) / 2 - 2px);
                     height          : 2px;
                     width           : 5px;
-                    background      : var(--fg-color);
+                    background      : var(--theme-ctrl-fg);
                     transform       : skew(0deg, -25deg);
                 }
 
@@ -89,50 +109,31 @@ export default {
                     display         : none;
                     position        : relative;
                     width           : 100%;
-                    background      : var(--bg-color);
-                    color           : var(--fg-color);
-                    font-size       : var(--text-lg);
+                    background      : var(--theme-bg);
+                    color           : var(--theme-fg);
                     border-radius   : 0 0 var(--border-radius) var(--border-radius);
-                    overflow        : hidden;
+                    overflow-y      : auto;
+                    overflow-x      : hidden;
                 }
 
                 .filter {
-                    width           : 100%;
-                    height          : var(--controls-height-m);
-                    line-height     : var(--controls-height-m);
-                    font-size       : var(--text-lg);
+                    height          : var(--theme-ctrl-height);
+                    line-height     : var(--theme-ctrl-height);
                     text-indent     : var(--padding-xl);
-                    color           : var(--fg-color);
-                    background      : var(--bg-color);
-                    border-width    : var(--border-width);
-                    border-color    : var(--fg-color);
-                    border-style    : solid none;
+                    color           : var(--theme-fg);
+                    background      : var(--theme-bg);
+                    width           : 100%;
+                    border-style    : none;
                     box-sizing      : border-box;
                     outline         : none;
                 }
 
-                ::slotted(option) {
-                    width           : 100%;
-                    height          : var(--controls-height-lg);
-                    text-indent     : var(--padding-xl);
-                    color           : var(--fg-color);
-                    padding         : 10px 0;
-                    font-size       : var(--text-lg);
-                    box-sizing      : border-box;
-                }
-
-                ::slotted(option:last-child) {
-                    border-radius   : 0 0 var(--border-radius) var(--border-radius);
-                }
-
-                ::slotted(option:hover) {
-                    background      : var(--bg-color-inv);
-                    color           : var(--fg-color-inv);
+                ::slotted(*.active) {
+                    text-decoration : underline;
                 }
 
                 ::slotted(option.active) {
-                    background      : var(--bg-color-hl);
-                    color           : var(--fg-color-hl);
+                    text-decoration : underline;
                 }
             </style>
         `;

@@ -1,20 +1,22 @@
-import Util     from "../util.js";
-import Keys     from "../keys.js";
-import Dom      from "../dom.js";
+import Util     from "../../util.js";
+import Const    from "../../constants.js";
+import Dom      from "../../dom.js";
+
 import Template from "./template.js";
 
-export default class Select_Multiple_Field extends HTMLElement {
-    static get formAssociated() {
-        return true;
-    }
-
+export default class Ui_Select_Multiple extends HTMLElement {
     static get observedAttributes() {
-        return ["value", "filter"];
+        return ["name", "value", "filter"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if ( name === "value" ) {
-            this._value = newValue.split(",");
+            if ( newValue.trim().length === 0 ) {
+                this._value = [];
+            } else {
+                this._value = newValue.split(",");
+            }
+
             this.renderOptions();
         }
 
@@ -41,14 +43,12 @@ export default class Select_Multiple_Field extends HTMLElement {
 
         this.dom   = Dom.buildDom(this.root);
         this.slots = Dom.buildSlots(this.root);
-        this.slots.$anon1.slotNodes =
-            this.slots.$anon1.assignedNodes().filter(n => n.classList != null);
 
         this.addEventListener("keyup", this.onKeyup);
         this.slots.$anon1.slotNodes.forEach(node => {
             node.setAttribute("draggable", true);
 
-            node.addEventListener("dragstart", e => {
+            node.on("dragstart", e => {
                 if ( this.disabled ) {
                     return;
                 }
@@ -57,12 +57,16 @@ export default class Select_Multiple_Field extends HTMLElement {
                 e.dataTransfer.effectAllowed = "move";
             });
 
-            node.addEventListener("dragenter", e => {
+            node.on("dragenter", e => {
                 node.classList.add("dragenter");
             });
 
-            node.addEventListener("dragleave", e => {
+            node.on("dragleave", e => {
                 node.classList.remove("dragenter");
+            });
+
+            node.on("change", e => {
+                this.renderOptions();
             });
         });
 
@@ -74,6 +78,14 @@ export default class Select_Multiple_Field extends HTMLElement {
         });
 
         this.dom.options.addEventListener("drop", e => {
+            /* @AUFGABE: aktuell wird die position der zwei elemente getauscht. das gezogene element
+             *           soll aber vor dem ziel element platziert, ohne, daß das zielelement seine
+             *           position verliert.
+             *
+             *           aktuell ist das mit slot inhalt nicht möglich.
+             *
+             *           - 17.10.2020
+             */
             e.stopPropagation();
             e.target.classList.remove("dragenter");
 
@@ -128,8 +140,16 @@ export default class Select_Multiple_Field extends HTMLElement {
         return this.hasAttribute("disabled");
     }
 
+    set name(val) {
+        this.setAttribute("name", val);
+    }
+
+    get name() {
+        return this.getAttribute("name");
+    }
+
     get value() {
-        return this._value;
+        return this._value.join(", ");
     }
 
     set value(val) {
@@ -149,42 +169,47 @@ export default class Select_Multiple_Field extends HTMLElement {
     onOptionsEvent(e) {
         this.toggleEntry(e.target.value);
         this.renderOptions();
+
+        Util.dispatchPublicEvent("change", this.root, {
+            value: this.value
+        });
     }
 
     onKeyup(e) {
         switch ( e.keyCode ) {
-            case Keys.KEY_ARROW_DOWN:
-            case Keys.KEY_ARROW_UP: {
+            case Const.KEY_J:
+            case Const.KEY_ARROW_DOWN: {
                 let nodes = this.slots.$anon1.slotNodes;
-
-                if ( e.keyCode == Keys.KEY_ARROW_DOWN ) {
-                    this.active_row = Math.min(this.active_row + 1, nodes.length - 1);
-                } else {
-                    this.active_row = Math.max(this.active_row - 1, 0);
-                }
-
+                this.active_row = Math.min(this.active_row + 1, nodes.length - 1);
                 this.renderActiveItem();
             } break;
 
-            case Keys.KEY_SPACE: {
+            case Const.KEY_K:
+            case Const.KEY_ARROW_UP: {
+                let nodes = this.slots.$anon1.slotNodes;
+                this.active_row = Math.max(this.active_row - 1, 0);
+                this.renderActiveItem();
+            } break;
+
+            case Const.KEY_SPACE: {
                 this.toggleEntry(this.slots.$anon1.slotNodes[this.active_row].value);
                 this.renderOptions();
                 this.renderActiveItem();
             } break;
 
-            case Keys.KEY_RETURN: {
+            case Const.KEY_RETURN: {
                 this.toggleEntry(this.slots.$anon1.slotNodes[this.active_row].value);
                 this.active_row = -1;
                 this.renderOptions();
                 this.renderActiveItem();
             } break;
 
-            case Keys.KEY_ESC: {
+            case Const.KEY_ESC: {
                 this.active_row = -1;
                 this.renderActiveItem();
             } break;
 
-            case Keys.KEY_F: {
+            case Const.KEY_F: {
                 this.dom.filter.focus();
             } break;
         }
@@ -192,7 +217,7 @@ export default class Select_Multiple_Field extends HTMLElement {
 
     renderOptions() {
         this.slots.$anon1.slotNodes.forEach(node => {
-            if ( this._value.includes(node.value) ) {
+            if ( this.value.includes(node.value) ) {
                 if ( node.classList ) {
                     node.classList.add("selected");
                 }
@@ -236,9 +261,11 @@ export default class Select_Multiple_Field extends HTMLElement {
         } else {
             this._value.push(val);
         }
+
+        this.value = this._value;
     }
 }
 
-if ( !customElements.get("select-multiple-field") ) {
-    customElements.define("select-multiple-field", Select_Multiple_Field);
+if ( !customElements.get("urq-ui-select-multiple") ) {
+    customElements.define("urq-ui-select-multiple", Ui_Select_Multiple);
 }

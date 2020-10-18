@@ -1,0 +1,36 @@
+:root {
+    --theme-bg                           : #fafafa;
+    --theme-fg                           : #030303;
+
+    --theme-ctrl-bg                      : #699b10;
+    --theme-ctrl-fg                      : #fafafa;
+    --theme-ctrl-hover-bg                : #88C815;
+    --theme-ctrl-hover-fg                : #fafafa;
+    --theme-ctrl-active-bg               : #6ba209;
+    --theme-ctrl-active-fg               : #fafafa;
+    --theme-ctrl-disabled-bg             : #999999;
+    --theme-ctrl-disabled-fg             : #030303;
+
+    --theme-wgt-bg                       : #880e4f;
+    --theme-wgt-fg                       : #fafafa;
+    --theme-wgt-hover-bg                 : #9D105B;
+    --theme-wgt-hover-fg                 : #fafafa;
+    --theme-wgt-active-bg                : #b9136b;
+    --theme-wgt-active-fg                : #ffffff;
+    --theme-wgt-disabled-bg              : #999999;
+    --theme-wgt-disabled-fg              : #030303;
+
+    --theme-ctrl-height                  : 45px;
+    --theme-padding                      : 15px;
+
+    --theme-font-family                  : Oswald;
+    --theme-font-size                    : 18px;
+
+    --theme-box-shadow                   : 0 5px 5px -3px rgba(69, 98, 10, 0.2),
+                                           0 8px 10px 1px rgba(69, 98, 10, 0.14),
+                                           0 3px 14px 2px rgba(69, 98, 10, 0.12);
+}
+
+[disabled] {
+}
+

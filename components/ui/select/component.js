@@ -1,11 +1,12 @@
-import Util     from "../util.js";
-import Keys     from "../keys.js";
-import Dom      from "../dom.js";
+import Util     from "../../util.js";
+import Const    from "../../constants.js";
+import Dom      from "../../dom.js";
+
 import Template from "./template.js";
 
-export default class Select_Field extends HTMLElement {
+export default class Ui_Select extends HTMLElement {
     static get observedAttributes() {
-        return ["value", "expanded", "filter"];
+        return ["name", "value", "expanded", "filter"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -41,28 +42,37 @@ export default class Select_Field extends HTMLElement {
 
         this.dom   = Dom.buildDom(this.root);
         this.slots = Dom.buildSlots(this.root);
-        this.slots.$anon1.slotNodes = this.slots.$anon1.assignedNodes().filter(n => n.classList != null);
+        this.setupEvents();
 
+        this.active_item = -1;
+    }
+
+    setupEvents() {
         this.slots.$anon1.slotNodes.forEach(node => {
-            if ( node.tagName === "OPTION" && node.value === this.value ) {
-                this.setActive(node.value, node.innerHTML);
-                return;
-            }
+            node.on("change", e => {
+                if ( node.value === this.value ) {
+                    this.setActive(node.value, node.innerHTML);
+                    return;
+                }
+            });
         });
 
-        this.dom.panel.addEventListener("click", e => this.onPanelEvent(e) );
-        this.dom.options.addEventListener("click", e => this.onOptionsEvent(e) );
-        this.addEventListener("keyup", this.onKeyup);
-        this.dom.filter.addEventListener("input", e => {
-            this.slots.$anon1.slotNodes.forEach(opt => {
-                if ( opt.tagName === "OPTION" ) {
-                    let pattern = e.originalTarget.value.split("").join(".*");
+        this.addEventListener("blur", e => {
+            this.expanded = false;
+        });
 
-                    if ( !e.originalTarget.value || opt.innerHTML.match(pattern) ) {
-                        opt.style.display = "block";
-                    } else {
-                        opt.style.display = "none";
-                    }
+        this.addEventListener("keyup", this.onKeyup);
+
+        this.dom.panel.onClick( e => this.onPanelEvent(e) );
+        this.dom.options.onClick(e => this.onOptionsEvent(e) );
+        this.dom.filter.onInput(e => {
+            this.slots.$anon1.slotNodes.forEach(opt => {
+                let pattern = this.dom.filter.value.split("").join(".*");
+
+                if ( !e.originalTarget.value || opt.innerHTML.match(pattern) ) {
+                    opt.style.display = "block";
+                } else {
+                    opt.style.display = "none";
                 }
             });
         });
@@ -75,8 +85,14 @@ export default class Select_Field extends HTMLElement {
                 this.expanded = false;
             }
         });
+    }
 
-        this.active_item = -1;
+    set name(val) {
+        this.setAttribute("name", val);
+    }
+
+    get name() {
+        return this.getAttribute("name");
     }
 
     set value(val) {
@@ -129,6 +145,9 @@ export default class Select_Field extends HTMLElement {
         if ( e.type === "click" ) {
             this.expanded = !this.expanded;
         }
+
+        let max_height = window.innerHeight - this.dom.options.getBoundingClientRect().y - 10;
+        this.dom.options.style.maxHeight = `${max_height}px`;
     }
 
     onOptionsEvent(e) {
@@ -142,30 +161,36 @@ export default class Select_Field extends HTMLElement {
 
     onKeyup(e) {
         switch ( e.keyCode ) {
-            case Keys.KEY_ARROW_DOWN:
-            case Keys.KEY_ARROW_UP: {
+            case Const.KEY_J:
+            case Const.KEY_ARROW_DOWN: {
                 if ( this.expanded === true ) {
                     let nodes = this.slots.$anon1.slotNodes;
-
-                    if ( e.keyCode == Keys.KEY_ARROW_DOWN ) {
-                        this.active_item = Math.min(this.active_item + 1, nodes.length - 1);
-                    } else {
-                        this.active_item = Math.max(this.active_item - 1, 0);
-                    }
-
+                    this.active_item = Math.min(this.active_item + 1, nodes.length - 1);
                     this.renderActiveItem();
                 } else {
                     this.expanded = true;
                 }
             } break;
 
-            case Keys.KEY_RETURN: {
+            case Const.KEY_K:
+            case Const.KEY_ARROW_UP: {
+                if ( this.expanded === true ) {
+                    let nodes = this.slots.$anon1.slotNodes;
+                    this.active_item = Math.max(this.active_item - 1, 0);
+                    this.renderActiveItem();
+                } else {
+                    this.expanded = true;
+                }
+            } break;
+
+            case Const.KEY_RETURN: {
                 if ( this.expanded ) {
                     let nodes = this.slots.$anon1.slotNodes;
 
                     if ( this.active_item >= 0 ) {
                         let node = nodes[this.active_item];
                         this.setActive(node.value, node.innerHTML);
+                        this.dom.filter.blur();
                         this.expanded = false;
                     }
                 } else {
@@ -173,11 +198,12 @@ export default class Select_Field extends HTMLElement {
                 }
             } break;
 
-            case Keys.KEY_F: {
+            case Const.KEY_F: {
                 this.dom.filter.focus();
             } break;
 
-            case Keys.KEY_ESC: {
+            case Const.KEY_ESC: {
+                this.dom.filter.blur();
                 this.expanded = false;
             } break;
         }
@@ -187,7 +213,7 @@ export default class Select_Field extends HTMLElement {
         this.value               = value;
         this.dom.panel.innerHTML = text;
 
-        Util.dispatchPublicEvent("changed", this.root, {
+        Util.dispatchPublicEvent("change", this.root, {
             value: value,
             text: text
         });
@@ -225,6 +251,6 @@ export default class Select_Field extends HTMLElement {
     }
 }
 
-if ( !customElements.get("select-field") ) {
-    customElements.define("select-field", Select_Field);
+if ( !customElements.get("urq-ui-select") ) {
+    customElements.define("urq-ui-select", Ui_Select);
 }
